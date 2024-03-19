@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="notification is-danger">
+            <h2 class="title is-2">Error {{ error_code }}</h2>
+            <p>{{ error_name }}
+
+            {% if error_code == 400 %}
+                <p>Bad Request - The server could not understand the request due to invalid syntax. / corrupted. </p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400" target="_blank">For more information, you can visit</a>
+
+            {% elif error_code == 403 %}
+                <p>Forbidden  - Access to the requested resource is forbidden. / corrupted.</p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403" target="_blank">For more information, you can visit</a>
+
+            {% elif error_code == 404 %}
+                <p>Not Found - The requested resource could not be found on the server. / corrupted.</p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404" target="_blank">For more information, you can visit</a>
+
+            {% elif error_code == 500 %}
+                <p>Internal Server Error - The server encountered an unexpected condition that prevented it from fulfilling the request. / corrupted.</p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500" target="_blank">For more information, you can visit</a>
+
+            {% elif error_code == 503 %}
+                <p>Service Unavailable - The server is currently unable to handle the request due to temporary overloading or maintenance of the server. / corrupted.</p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503" target="_blank">For more information, you can visit</a>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

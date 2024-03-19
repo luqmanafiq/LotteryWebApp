@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename='rng.js') }}"></script>
+<h3 class="title is-3">Lottery Web Application Admin</h3>
+<h4 class="subtitle is-4">
+    Welcome, {{ current_user.firstname }}
+</h4>
+
+<div class="column is-4 is-offset-4">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <h4 class="title is-4">Lottery</h4>
+    <div class="box">
+        {# render play again button if current lottery round has been played #}
+        <form method="POST" action="/generate_winning_draw">
+            <div>
+                <button class="button is-info is-centered">Generate Winning Draw</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="column is-4 is-offset-4">
+
+    <div class="box">
+        {% if winning_draw %}
+            <div class="field">
+                <p>Round {{ winning_draw.lottery_round }}</p>
+                <p>{{ winning_draw.numbers }}</p>
+            </div>
+        {% endif %}
+        <form method="POST" action="/view_winning_draw">
+            <div>
+                <button class="button is-info is-centered">View Winning Draw</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="column is-8 is-offset-2">
+
+    <div class="box">
+        {% if results %}
+            <div class="field">
+                {% for result in results %}
+                    <p>{{ result }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="POST" action="/run_lottery">
+            <div>
+                <button class="button is-info is-centered">Run Lottery</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="column is-10 is-offset-1">
+
+    <h4 class="title is-4">Current Users</h4>
+    <div class="box">
+        {% if current_users %}
+            <div class="field">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Phone No.</th>
+                        <th>Role</th>
+                    </tr>
+                    {% for user in current_users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.firstname }}</td>
+                            <td>{{ user.lastname }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>{{ user.role }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        <form method="POST" action="/view_all_users">
+            <div>
+                <button class="button is-info is-centered">View All Users</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="column is-8 is-offset-2" id="test">
+    <h4 class="title is-4">Security Logs</h4>
+    <div class="box">
+        {% if logs %}
+            <div class="field">
+            <table class="table">
+                <tr>
+                    <th>Last 10 Security Log Entries</th>
+                </tr>
+                {% for entry in logs %}
+                    <tr>
+                        <td>{{ entry }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            </div>
+        {% endif %}
+        <form method="POST" action="/logs">
+            <div>
+                <button class="button is-info is-centered">View Logs</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="column is-8 is-offset-2">
+    <h4 class="title is-4">User Activity Logs</h4>
+    <div class="box">
+        {% if user_activity_logs %}
+            <div class="field">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Registered</th>
+                        <th>Current Log</th>
+                        <th>Previous Log</th>
+                        <th>Current Successful Login IP</th>
+                        <th>Last Successful Login IP</th>
+                        <th>Login Total</th>
+                    </tr>
+                    {% for user in user_activity_logs %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.registered_on.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                            <td>
+                                {% if user.current_login %}
+                                    {{ user.current_login.strftime('%d/%m/%Y %H:%M:%S') }}
+                                {% else %}
+                                    Not yet logged in
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.last_login %}
+                                    {{ user.last_login.strftime('%d/%m/%Y %H:%M:%S') }}
+                                {% else %}
+                                    Not yet logged in
+                                {% endif %}
+                            </td>
+                            <td>{{ user.current_successful_login }}</td>
+                            <td>{{ user.last_successful_login }}</td>
+                            <td>{{ user.login_total }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        <form method="POST" action="/view_user_activity">
+            <div>
+                <button class="button is-info is-centered">View User Activity</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3 class="title is-3">2 Factor Authentication Setup</h3>
+
+    <p>To set up 2-factor authentication under the account name {{ email }}, scan the following QR code with your smartphone's authenticator app:</p>
+
+    <p><img src="{{ qrcode(uri, box_size=5, border=1) }}" alt="2FA QR Code"></p>
+
+    <p>Once set up, please go to the <a href="{{ url_for('users.login') }}"><u>Login</u></a> page</p>
+
+
+{% endblock %}
